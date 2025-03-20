@@ -18,7 +18,7 @@ export const login = createAsyncThunk(
             localStorage.removeItem('username');
             localStorage.removeItem('first_name');
             localStorage.removeItem('last_name');
-            return rejectWithValue(error || "Erro desconhecido");
+            return rejectWithValue(error.message || "Erro desconhecido");
         };
     }
 );
@@ -29,20 +29,17 @@ export const checkLogin = createAsyncThunk(
         try {
             const response = await api.get('/user');
 
-            if (!response.ok) {
-                throw new Error('Erro ao verificar o login');
-            }
-
-            const { username: responseUsername, first_name, last_name } = response;
-
+            const { username: responseUsername, first_name, last_name, created_at } = response;
+            
             localStorage.setItem('username', responseUsername);
             localStorage.setItem('first_name', first_name);
             localStorage.setItem('last_name', last_name);
+            localStorage.setItem('created_at', created_at);
 
             return response;
 
         } catch (error) {
-            return rejectWithValue(error || "Erro desconhecido");
+            return rejectWithValue(error.message || "Erro desconhecido");
         };
     }
 );
@@ -54,8 +51,7 @@ const authSlice = createSlice({
         loading: false,
         error: null,
     },
-    reducers: {
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state) => {
@@ -65,13 +61,12 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                state.error = null;
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
-
+            
             .addCase(checkLogin.pending, (state) => {
                 state.error = null;
             })
@@ -79,10 +74,10 @@ const authSlice = createSlice({
                 state.user = action.payload;
             })
             .addCase(checkLogin.rejected, (state, action) => {
-                state.error = action.payload;
                 state.user = null;
+                state.error = action.payload;
             });
-    },
+    }
 });
 
 export default authSlice.reducer;

@@ -3,7 +3,7 @@ class API{
         this.url = 'http://localhost:8080';
     }
 
-    async request(endpoint, { method = 'GET', body = {}, headers = null } = null) {
+    async request(endpoint, { method = 'GET', body = null, headers = {} } = null) {
         const config = {
             method,
             headers: {
@@ -28,23 +28,23 @@ class API{
         }
     };
 
-    get(endpoint, headers = null) {
+    get(endpoint, headers = {}) {
         return this.request(endpoint, { method: 'GET', headers });
     };
 
-    post(endpoint, body, headers = null) {
+    post(endpoint, body, headers = {}) {
         return this.request(endpoint, { method: 'POST', body, headers });
     };
 
-    put(endpoint, body, headers = null) {
+    put(endpoint, body, headers = {}) {
         return this.request(endpoint, { method: 'PUT', body, headers });
     };
 
-    delete(endpoint, headers = null) {
+    delete(endpoint, headers = {}) {
         return this.request(endpoint, { method: 'DELETE', headers });
     };
 
-    patch(endpoint, body, headers = null) {
+    patch(endpoint, body, headers = {}) {
         return this.request(endpoint, { method: 'PATCH', body, headers });
     };
 };

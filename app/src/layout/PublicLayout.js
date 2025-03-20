@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Container from "../components/layout/Container";
 import { checkLogin } from "../slices/auth/authSlice";
+import Container from "../components/layout/Container";
 
 const PublicLayout = () => {
     const dispatch = useDispatch()
@@ -17,7 +17,7 @@ const PublicLayout = () => {
     }, [dispatch]);
 
     if (user) {
-        return <Navigate to="/dashboard" />
+        return <Navigate to="/tasks" />
     };
 
     return (

@@ -43,7 +43,8 @@ const Login = () => {
         setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     };
 
-    const handleLogin = () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
             dispatch(login(loginForm));
         } catch (error) {
@@ -74,7 +75,7 @@ const Login = () => {
                 h={12}
                 fontSize="lg"
                 fontWeight="bold"
-                onClick={handleLogin}
+                onClick={(e) => handleLogin(e)}
             >
                 { loading ? <Spinner /> : "Entrar" }
             </Button>
